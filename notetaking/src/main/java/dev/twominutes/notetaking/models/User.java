@@ -2,7 +2,6 @@ package dev.twominutes.notetaking.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 @Data
