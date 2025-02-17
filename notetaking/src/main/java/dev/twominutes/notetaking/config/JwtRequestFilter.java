@@ -21,8 +21,8 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter{
-    private JwtUtil jwtUtil;
-    private UserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
+    private final UserDetailsService userDetailsService;
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
