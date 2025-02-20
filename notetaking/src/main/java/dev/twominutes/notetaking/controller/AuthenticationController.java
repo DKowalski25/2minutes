@@ -1,9 +1,11 @@
 package dev.twominutes.notetaking.controller;
 
-import dev.twominutes.notetaking.models.AuthenticationRequest;
-import dev.twominutes.notetaking.models.AuthenticationResponse;
+import dev.twominutes.notetaking.models.auth.AuthenticationRequest;
+import dev.twominutes.notetaking.models.auth.AuthenticationResponse;
 import dev.twominutes.notetaking.utils.JwtUtil;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,7 +22,8 @@ public class AuthenticationController {
     private final UserDetailsService userDetailsService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
+    public ResponseEntity<AuthenticationResponse> createAuthenticationToken(
+            @RequestBody AuthenticationRequest authenticationRequest)
             throws Exception {
         if (authenticationRequest.getUsername() == null || authenticationRequest.getPassword() == null) {
             throw new IllegalArgumentException("Username or password cannot be null");
