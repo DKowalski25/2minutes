@@ -1,4 +1,4 @@
-package dev.twominutes.notetaking.models;
+package dev.twominutes.notetaking.models.auth;
 
 import lombok.Data;
 
