@@ -1,9 +1,10 @@
-package dev.twominutes.notetaking.service;
+package dev.twominutes.notetaking.auth;
 
 import dev.twominutes.notetaking.models.User;
-import dev.twominutes.notetaking.repository.UserRepository;
+import dev.twominutes.notetaking.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,10 +22,6 @@ public class CustomUserDetailService implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                Collections.emptyList()
-        );
+        return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), Collections.emptyList());
     }
 }
