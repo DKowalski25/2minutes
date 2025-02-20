@@ -2,7 +2,6 @@ package dev.twominutes.notetaking.controller.goal;
 
 import dev.twominutes.notetaking.auth.CustomUserDetails;
 import dev.twominutes.notetaking.dto.goal.GoalDto;
-import dev.twominutes.notetaking.models.User;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
