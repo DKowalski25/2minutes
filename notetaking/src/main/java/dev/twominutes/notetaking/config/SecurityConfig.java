@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import dev.twominutes.notetaking.service.CustomUserDetailService;
+import dev.twominutes.notetaking.auth.CustomUserDetailService;
 
 @Configuration
 @EnableWebSecurity
