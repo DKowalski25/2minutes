@@ -7,14 +7,16 @@ import dev.twominutes.notetaking.repository.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -31,7 +33,8 @@ public class UserServiceImplTest {
 
     @Test
     public void testRegisterUser() {
-        // 1. Подготовка данных
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+
         UserRequestDto userDto = new UserRequestDto();
         userDto.setUsername("testuser");
         userDto.setEmail("test@example.com");
@@ -43,22 +46,41 @@ public class UserServiceImplTest {
         savedUser.setEmail("test@example.com");
         savedUser.setPassword("encoded_password");
 
-        // 2. Мокирование зависимостей
         when(passwordEncoder.encode("test_password")).thenReturn("encoded_password");
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
-        // 3. Вызов метода
-        User result = userService.registerUser(userDto);
+        userService.registerUser(userDto);
 
-        // 4. Проверка результатов
-        assertNotNull(result);
-        assertEquals(1L, result.getId());
-        assertEquals("testuser", result.getUsername());
-        assertEquals("test@example.com", result.getEmail());
-        assertEquals("encoded_password", result.getPassword()); // Проверка закодированного пароля
+        verify(userRepository).save(userCaptor.capture());
+        User capturedUser = userCaptor.getValue();
+
+        assertNotNull(capturedUser);
+        assertEquals("testuser", capturedUser.getUsername());
+        assertEquals("test@example.com", capturedUser.getEmail());
+        assertEquals("encoded_password", capturedUser.getPassword()); // Проверка закодированного пароля
 
         // 5. Проверка вызовов
         verify(passwordEncoder, times(1)).encode("test_password");
         verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    public void testRegisterUser_UsernameAlreadyExists() {
+        UserRequestDto userDto = new UserRequestDto();
+        userDto.setUsername("testuser");
+        userDto.setEmail("test@example.com");
+        userDto.setPassword("test_password");
+
+        User existingUser = new User(1L, "existingUser", "test@example.com", "encoded_password");
+
+        when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(existingUser));
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            userService.registerUser(userDto);
+        });
+
+        assertEquals("User already exists", exception.getMessage());
+
+        verify(userRepository, never()).save(any(User.class));
     }
 }
