@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -18,6 +20,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserRequestDto userDto) {
+        Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
+        if (existingUser.isPresent()) {
+            throw new IllegalArgumentException("User already exists");
+        }
+
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
