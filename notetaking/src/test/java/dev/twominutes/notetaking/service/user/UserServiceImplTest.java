@@ -32,13 +32,14 @@ public class UserServiceImplTest {
     private UserServiceImpl userService;
 
     @Test
-    public void testRegisterUser() {
+    void testRegisterUser() {
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
 
-        UserRequestDto userDto = new UserRequestDto();
-        userDto.setUsername("testuser");
-        userDto.setEmail("test@example.com");
-        userDto.setPassword("test_password");
+        UserRequestDto userDto = UserRequestDto.builder()
+                .username("testuser")
+                .email("test@example.com")
+                .password("test_password")
+                .build();
 
         User savedUser = new User();
         savedUser.setId(1L);
@@ -59,13 +60,12 @@ public class UserServiceImplTest {
         assertEquals("test@example.com", capturedUser.getEmail());
         assertEquals("encoded_password", capturedUser.getPassword()); // Проверка закодированного пароля
 
-        // 5. Проверка вызовов
         verify(passwordEncoder, times(1)).encode("test_password");
         verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
-    public void testRegisterUser_UsernameAlreadyExists() {
+    void testRegisterUser_UsernameAlreadyExists() {
         UserRequestDto userDto = new UserRequestDto();
         userDto.setUsername("testuser");
         userDto.setEmail("test@example.com");
