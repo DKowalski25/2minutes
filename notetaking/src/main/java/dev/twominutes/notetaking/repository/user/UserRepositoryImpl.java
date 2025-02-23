@@ -23,6 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
             rs.getString("password")
     );
 
+
     @Override
     public User save(User user) {
         String sql = "INSERT INTO users (username, email, password) VALUES(?, ?, ?) RETURNING id";
@@ -59,5 +60,11 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> findAll() {
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, userRowMapper);
+    }
+
+    @Override
+    public void deleteAll() {
+        String sql = "DELETE FROM users";
+        jdbcTemplate.update(sql);
     }
 }
