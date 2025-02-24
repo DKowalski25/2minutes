@@ -1,7 +1,9 @@
 package dev.twominutes.notetaking.repository.note;
 
 import dev.twominutes.notetaking.models.Note;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class NoteRepositoryImpl implements NoteRepository{
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     private static class NoteRowMapper implements RowMapper<Note> {
