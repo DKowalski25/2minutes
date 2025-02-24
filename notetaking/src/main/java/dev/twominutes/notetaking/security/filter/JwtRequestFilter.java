@@ -1,4 +1,4 @@
-package dev.twominutes.notetaking.config;
+package dev.twominutes.notetaking.security.filter;
 
 import dev.twominutes.notetaking.utils.JwtUtil;
 

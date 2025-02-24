@@ -1,5 +1,7 @@
-package dev.twominutes.notetaking.config;
+package dev.twominutes.notetaking.security.config;
 
+import dev.twominutes.notetaking.security.service.CustomUserDetailService;
+import dev.twominutes.notetaking.security.filter.JwtRequestFilter;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
@@ -15,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import dev.twominutes.notetaking.auth.CustomUserDetailService;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/authenticate/**").permitAll()// Разрешаем доступ без аутентификации
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll() // Разрешить доступ к Swagger
                         .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
                 )
                 .sessionManagement(session -> session

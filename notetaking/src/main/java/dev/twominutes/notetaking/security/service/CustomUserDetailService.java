@@ -1,4 +1,4 @@
-package dev.twominutes.notetaking.auth;
+package dev.twominutes.notetaking.security.service;
 
 import dev.twominutes.notetaking.models.User;
 import dev.twominutes.notetaking.repository.user.UserRepository;

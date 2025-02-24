@@ -1,4 +1,4 @@
-package dev.twominutes.notetaking.auth;
+package dev.twominutes.notetaking.security.service;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
