@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class noteDto {
+public class NoteDto {
     private Long id;
     private Long userId;
     private String title;
